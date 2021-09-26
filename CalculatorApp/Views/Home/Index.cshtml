@@ -6,29 +6,46 @@
 	new { @class = "calculator-screen", disabled = "disabled" })
 
 	<div class="calculator-buttons">
-		<button type="button" class="btn bg-success" onclick="AddNumber('7')">7</button>
-		<button type="button" class="btn bg-success" onclick="AddNumber('8')">8</button>
-		<button type="button" class="btn bg-success" onclick="AddNumber('9')">9</button>
-		<button type="button" class="btn bg-secondary" onclick="AddOperation('/')">/</button>
-		<button type="button" class="btn bg-secondary add-button" onclick="AddOperation('+')">+</button>
+		<button type="button" class="btn bg-success" 
+				onclick="AddNumber('7')">7</button>
+		<button type="button" class="btn bg-success" 
+				onclick="AddNumber('8')">8</button>
+		<button type="button" class="btn bg-success" 
+				onclick="AddNumber('9')">9</button>
+		<button type="button" class="btn bg-secondary operation" 
+				onclick="AddOperation('/')">/</button>
+		<button type="button" class="btn bg-secondary add-button operation" 
+				onclick="AddOperation('+')">+</button>
 
 
-		<button type="button" class="btn bg-success" onclick="AddNumber('4')">4</button>
-		<button type="button" class="btn bg-success" onclick="AddNumber('5')">5</button>
-		<button type="button" class="btn bg-success" onclick="AddNumber('6')">6</button>
-		<button type="button" class="btn bg-secondary" onclick="AddOperation('-')">-</button>
+		<button type="button" class="btn bg-success" 
+				onclick="AddNumber('4')">4</button>
+		<button type="button" class="btn bg-success" 
+				onclick="AddNumber('5')">5</button>
+		<button type="button" class="btn bg-success"
+				onclick="AddNumber('6')">6</button>
+		<button type="button" class="btn bg-secondary operation"
+				onclick="AddOperation('-')">-</button>
 
 
-		<button type="button" class="btn bg-success" onclick="AddNumber('1')">1</button>
-		<button type="button" class="btn bg-success" onclick="AddNumber('2')">2</button>
-		<button type="button" class="btn bg-success" onclick="AddNumber('3')">3</button>
-		<button type="button" class="btn bg-secondary" onclick="AddOperation('*')">*</button>
-		<button type="button" class="btn bg-primary result-button" onclick="GetResult()">=</button>
+		<button type="button" class="btn bg-success"
+				onclick="AddNumber('1')">1</button>
+		<button type="button" class="btn bg-success"
+				onclick="AddNumber('2')">2</button>
+		<button type="button" class="btn bg-success" 
+				onclick="AddNumber('3')">3</button>
+		<button type="button" class="btn bg-secondary operation" 
+				onclick="AddOperation('*')">*</button>
+		<button type="button" class="btn bg-primary result-button operation" 
+				onclick="GetResult()">=</button>
 
 
-		<button type="button" class="btn bg-success zero-button" onclick="AddNumber('0')">0</button>
-		<button type="button" class="btn bg-success" onclick="AddNumber(',')">,</button>
-		<button type="button" class="btn bg-danger" onclick="ClearScreen()">C</button>
+		<button type="button" class="btn bg-success zero-button" 
+				onclick="AddNumber('0')">0</button>
+		<button type="button" class="btn bg-success" 
+				onclick="AddNumber(',')">,</button>
+		<button type="button" class="btn bg-danger" 
+				onclick="ClearScreen()">C</button>
 	</div>
 </div>
 
@@ -37,26 +54,29 @@
 	<script type="text/javascript">
         var screenInput = $("#ScreenInput")
 		var availableOperations = ['-', '+', '/', '*'];
-        $(document).ready(function () {
+
+		$(document).ready(function () {
             screenInput.val('0');
         })
 
-        function AddNumber(number) {
+		function AddNumber(number) {
 			var val = screenInput.val();
-
-            if (val == '0' && number != ',')
-                val == '';
+			if (val == '0' && number != ',')
+                val = ' ';
             else if (number == ',' &&
                 availableOperations.includes(val.slice(-1)))
                 number = '0,';
 
-            screenInput.val(val + number);
+			screenInput.val(val + number);
+			setOperationButtonsAvailable(true);
 		}
         function AddOperation(operation) {
 			screenInput.val(screenInput.val() + operation);
+			setOperationButtonsAvailable(false);
 		}
 		function ClearScreen() {
-            screenInput.val('0');
+			screenInput.val('0');
+			setOperationButtonsAvailable(true);
 		}
 		function GetResult() {
             $.ajax({
@@ -76,6 +96,10 @@
 				},
 				dataType: "json"
             });
+		}
+
+		function setOperationButtonsAvailable(state) {
+			$('.operation').prop('disabled', !state);
 		}
 	</script>
 }
